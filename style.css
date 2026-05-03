@@ -1,0 +1,251 @@
+/* --- COLOR PALETTE --- */
+:root {
+    --bg-color: #0f0f11;       
+    --text-main: #ffffff;      
+    --text-muted: #a1a1aa;     
+    --accent-color: #8b5cf6;
+    --osu-color: #ff66aa;      
+    --shape-color: rgba(139, 92, 246, 0.25); 
+    --glass-bg: rgba(26, 26, 29, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 3rem 1rem;
+    position: relative; 
+    overflow-x: hidden; 
+}
+
+/* --- BLURRED WALLPAPER BACKGROUND (WITH ENTRANCE ANIMATION) --- */
+body::before {
+    content: "";
+    position: fixed;
+    top: -20px; 
+    left: -20px;
+    width: calc(100vw + 40px);
+    height: calc(100vh + 40px);
+    background-image: url('images/Screenshot 2026-05-04 021659.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -2; 
+    animation: bgWakeUp 1.2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes bgWakeUp {
+    0% { filter: blur(20px) brightness(0.1); transform: scale(1.1); }
+    100% { filter: blur(8px) brightness(0.4); transform: scale(1); }
+}
+
+/* --- ANIMATED MULTI-SHAPE BACKGROUND --- */
+.bg-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; 
+    overflow: hidden;
+    pointer-events: none; 
+}
+
+.bg-animation li {
+    position: absolute;
+    display: block;
+    list-style: none;
+    background: var(--shape-color);
+    bottom: -150px;
+    animation: floatAndSpin 15s linear infinite, pulseGlow 4s ease-in-out infinite;
+}
+
+/* Shape Classes */
+.shape-circle {
+    border-radius: 50%;
+}
+
+.shape-square {
+    border-radius: 12px; /* Slightly rounded squares look more premium */
+}
+
+.shape-star {
+    /* Uses CSS clip-path to perfectly cut out a 5-point star */
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+/* Positioning, Sizing, and Timings (using negative delays for immediate effect) */
+
+/* Circles */
+.bg-animation li:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-duration: 12s; animation-delay: -2s; }
+.bg-animation li:nth-child(2) { left: 75%; width: 90px; height: 90px; animation-duration: 14s; animation-delay: -1s; }
+.bg-animation li:nth-child(3) { left: 40%; width: 60px; height: 60px; animation-duration: 10s; animation-delay: -4s; }
+.bg-animation li:nth-child(4) { left: 90%; width: 65px; height: 65px; animation-duration: 16s; animation-delay: -3s; }
+
+/* Squares */
+.bg-animation li:nth-child(5) { left: 25%; width: 50px; height: 50px; animation-duration: 15s; animation-delay: -7s; }
+.bg-animation li:nth-child(6) { left: 60%; width: 35px; height: 35px; animation-duration: 18s; animation-delay: -10s; }
+.bg-animation li:nth-child(7) { left: 85%; width: 45px; height: 45px; animation-duration: 11s; animation-delay: -8s; }
+.bg-animation li:nth-child(8) { left: 15%; width: 70px; height: 70px; animation-duration: 20s; animation-delay: -12s; }
+
+/* Stars */
+.bg-animation li:nth-child(9) { left: 50%; width: 40px; height: 40px; animation-duration: 13s; animation-delay: -5s; }
+.bg-animation li:nth-child(10) { left: 5%; width: 55px; height: 55px; animation-duration: 17s; animation-delay: -9s; }
+.bg-animation li:nth-child(11) { left: 65%; width: 80px; height: 80px; animation-duration: 19s; animation-delay: -6s; }
+.bg-animation li:nth-child(12) { left: 35%; width: 30px; height: 30px; animation-duration: 14s; animation-delay: -11s; }
+
+/* Unified tumbling animation */
+@keyframes floatAndSpin {
+    0% { transform: translateY(0) scale(1) rotate(0deg); }
+    100% { transform: translateY(-120vh) scale(1.5) rotate(360deg); }
+}
+
+/* We use drop-shadow instead of box-shadow so the glow conforms to the Star shape! */
+@keyframes pulseGlow {
+    0%, 100% { filter: drop-shadow(0 0 8px var(--shape-color)); opacity: 0.6; }
+    50% { filter: drop-shadow(0 0 20px var(--accent-color)); opacity: 1; }
+}
+
+/* --- CONTAINER --- */
+.container {
+    max-width: 800px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    animation: slideUpFade 0.8s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+@keyframes slideUpFade {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- PROFILE SECTION --- */
+.profile-section { text-align: center; }
+
+.profile-img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent-color);
+    margin-bottom: 1rem;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+    animation: imgPulse 2.5s infinite alternate;
+}
+
+@keyframes imgPulse {
+    0% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
+    100% { box-shadow: 0 0 30px rgba(139, 92, 246, 0.8); }
+}
+
+.profile-name { font-size: 2.2rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 0.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.profile-bio { color: var(--text-muted); font-size: 1rem; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+
+/* --- SOCIAL LINKS --- */
+.socials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+.social-card {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 1.5rem; background-color: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border); border-radius: 15px; text-decoration: none; color: var(--text-main);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center;
+}
+
+.social-card:hover {
+    background-color: var(--accent-color); transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 15px 25px rgba(139, 92, 246, 0.4); border-color: var(--accent-color);
+}
+
+.social-emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+.social-name { font-weight: 600; font-size: 1.1rem; }
+
+/* --- COMMON GLASS WINDOW STYLES --- */
+.window-pane {
+    background-color: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+}
+
+/* --- OSU! DROPDOWN SECTION --- */
+.osu-dropdown { transition: all 0.3s ease; }
+.osu-dropdown summary::-webkit-details-marker { display: none; }
+
+.osu-summary {
+    list-style: none; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer; font-weight: 600; font-size: 1.1rem; background-color: rgba(0, 0, 0, 0.3); transition: background-color 0.3s ease;
+}
+
+.osu-summary:hover { background-color: rgba(255, 102, 170, 0.2); }
+.osu-header-content { display: flex; align-items: center; gap: 0.75rem; }
+.osu-icon { color: var(--osu-color); font-weight: 800; font-size: 1.2rem; }
+
+.dropdown-arrow { transition: transform 0.3s ease; font-size: 0.9rem; color: var(--text-muted); }
+.osu-dropdown[open] .dropdown-arrow { transform: rotate(180deg); }
+
+.osu-content { padding: 1.5rem; border-top: 1px solid var(--glass-border); animation: fadeInDropdown 0.4s ease forwards; }
+
+/* osu! Stats Grid */
+.osu-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+.osu-stat-box { background-color: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 8px; padding: 1rem; text-align: center; }
+.osu-stat-title { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem; }
+.osu-stat-value { font-size: 1.4rem; font-weight: 700; color: var(--text-main); }
+
+/* OSU! TOP PLAYS SECTION */
+.top-plays-section { margin-top: 2rem; margin-bottom: 1.5rem; border-top: 1px solid var(--glass-border); padding-top: 1.5rem; }
+.top-plays-header { font-size: 1.1rem; font-weight: 600; margin-bottom: 1.2rem; color: var(--text-main); text-align: center; }
+.top-plays-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+.play-mode-title { font-size: 1.05rem; font-weight: 600; color: var(--osu-color); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+.play-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.play-item { background-color: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 6px; padding: 0.75rem; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.2s ease; }
+.play-item:hover { background-color: rgba(255, 102, 170, 0.1); transform: scale(1.02); transition: all 0.2s ease; }
+.play-info { display: flex; flex-direction: column; text-align: left; overflow: hidden; }
+.play-song { font-weight: 600; font-size: 0.9rem; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+.play-diff { font-size: 0.8rem; color: #ffcc22; font-weight: 600; }
+.play-stats { text-align: right; display: flex; flex-direction: column; min-width: 65px; }
+.play-pp { font-weight: 700; font-size: 1rem; color: var(--osu-color); }
+.play-acc { font-size: 0.8rem; color: var(--text-muted); }
+
+.osu-profile-btn { display: block; width: 100%; background-color: rgba(255, 102, 170, 0.15); color: var(--text-main); text-decoration: none; text-align: center; padding: 1rem; border-radius: 8px; font-weight: 600; border: 1px solid var(--osu-color); transition: all 0.3s ease; }
+.osu-profile-btn:hover { background-color: var(--osu-color); box-shadow: 0 5px 15px rgba(255, 102, 170, 0.4); transform: translateY(-2px); }
+
+/* --- SHOWCASE WINDOW --- */
+.window-header { background-color: rgba(0, 0, 0, 0.4); padding: 0.75rem 1rem; display: flex; justify-content: center; align-items: center; border-bottom: 1px solid var(--glass-border); }
+.window-title { font-size: 0.9rem; color: var(--text-muted); letter-spacing: 1px; font-weight: 600; text-transform: uppercase; }
+.window-body { padding: 1.5rem; }
+
+.main-video-container { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.5); margin-bottom: 1.5rem; }
+.main-video-container iframe, .prev-video iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+.previous-videos-title { font-size: 1rem; color: var(--text-main); margin-bottom: 1rem; font-weight: 600; }
+.previous-videos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.prev-video { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.4); transition: transform 0.3s ease; }
+.prev-video:hover { transform: scale(1.05); z-index: 2; box-shadow: 0 5px 20px rgba(139, 92, 246, 0.5); }
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 768px) {
+    .socials-grid { grid-template-columns: repeat(2, 1fr); }
+    .previous-videos-grid { grid-template-columns: 1fr; }
+    .osu-stats-grid { grid-template-columns: 1fr; }
+    .top-plays-grid { grid-template-columns: 1fr; } 
+    .play-song { max-width: 200px; }
+}
+
+@media (max-width: 480px) {
+    .socials-grid { grid-template-columns: 1fr; }
+}
+
+@keyframes fadeInDropdown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
