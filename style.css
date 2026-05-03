@@ -146,6 +146,17 @@ body::before {
     margin-bottom: 1rem;
     box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
     animation: imgPulse 2.5s infinite alternate;
+    
+    /* ADDED: A smooth, bouncy transition for the hover effect */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    cursor: pointer; /* Changes the mouse to a hand icon */
+}
+
+/* ADDED: The actual hover animation */
+.profile-img:hover {
+    transform: scale(1.15) rotate(-5deg); /* Zooms in and adds a slight tilt */
+    box-shadow: 0 0 40px var(--accent-color); /* Intensifies the glow */
+    border-color: #ffffff; /* Changes the border to bright white */
 }
 
 @keyframes imgPulse {
